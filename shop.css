@@ -1,0 +1,63 @@
+.shop-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(7px, 1.4vw, 22px);
+}
+.shop-nav button {
+  min-height: 40px;
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  white-space: nowrap;
+  font-size: 11px;
+}
+.shop-nav button:hover { text-decoration: underline; }
+#shop-dialog {
+  max-width: 510px;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: clamp(24px, 5vw, 42px);
+}
+#shop-title { font-size: clamp(25px, 4vw, 32px); }
+#shop-dialog .eyebrow { margin-bottom: 8px; }
+.shop-form, .shop-actions, .shop-orders { display: grid; gap: 12px; }
+.shop-form label { display: grid; gap: 6px; font-size: 13px; }
+.shop-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid #b9bdaa;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+}
+.shop-actions { margin-top: 12px; }
+.shop-actions .button, .shop-form .button { width: 100%; justify-content: center; }
+.shop-secondary {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #b9bdaa;
+  background: transparent;
+  color: var(--ink);
+}
+.shop-summary, .shop-order {
+  background: #efeee8;
+  padding: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.shop-orders { padding: 0; list-style: none; }
+.shop-order p, .shop-summary p { margin: 5px 0; }
+#shop-message { color: #843a30 !important; }
+#shop-message:empty { display: none; }
+@media (max-width: 900px) {
+  .header-cta { display: none; }
+}
+@media (max-width: 680px) {
+  header { gap: 8px; }
+  .shop-nav { margin-inline-start: auto; }
+  .shop-nav button { min-height: 44px; }
+  #shop-dialog { max-height: calc(100dvh - 20px); width: calc(100% - 20px); }
+}
