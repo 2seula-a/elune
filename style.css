@@ -524,21 +524,31 @@ h2 em {
 .collection {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: #eeede7
+  align-items: stretch;
+  background: #fff
 }
 
 .collection-image {
   min-height: 670px;
   position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.collection-image-frame {
+  width: 100%;
+  height: 670px;
+  position: relative;
   overflow: hidden
 }
 
-.collection-image img {
+.collection-image-frame img {
   position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 60% center
+  object-position: center
 }
 
 .collection-image>span {
@@ -560,6 +570,55 @@ h2 em {
 .product h2 {
   font: 48px var(--serif);
   letter-spacing: -1px
+}
+
+.product-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px
+}
+
+.product-heading h2 {
+  margin-top: 0
+}
+
+.scent-picker {
+  flex: 0 0 auto;
+  padding-top: 7px
+}
+
+.scent-picker-label {
+  display: block;
+  margin-bottom: 11px;
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-align: right
+}
+
+.scent-swatches {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px
+}
+
+.scent-swatch {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid rgba(81, 71, 63, .16);
+  border-radius: 50%;
+  background: var(--scent-color)
+}
+
+.scent-swatch:hover {
+  transform: translateY(-1px)
+}
+
+.scent-swatch[aria-pressed="true"] {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--ink)
 }
 
 .product-ko {
@@ -636,8 +695,12 @@ legend span {
 
 details {
   border-top: 1px solid #d2d4c7;
-  padding: 16px 0;
+  padding: 14px 0 10px;
   font-size: 10px
+}
+
+details + details {
+  margin-top: 8px
 }
 
 summary {
@@ -655,7 +718,7 @@ details p {
   font-size: 10px;
   line-height: 1.9;
   color: var(--muted);
-  margin: 14px 0 0
+  margin: 10px 0 0
 }
 
 .closing {
@@ -829,8 +892,29 @@ dialog>p:not(.eyebrow) {
     font-size: 40px
   }
 
+  .product-heading {
+    display: block
+  }
+
+  .scent-picker {
+    margin: 18px 0 24px;
+    padding-top: 0
+  }
+
+  .scent-picker-label {
+    text-align: left
+  }
+
+  .scent-swatches {
+    justify-content: flex-start
+  }
+
   .collection-image {
     min-height: 650px
+  }
+
+  .collection-image-frame {
+    height: 650px
   }
 
   .ritual-grid {
@@ -1134,6 +1218,10 @@ dialog>p:not(.eyebrow) {
     min-height: 420px
   }
 
+  .collection-image-frame {
+    height: 420px
+  }
+
   .product {
     padding: 45px 7%
   }
@@ -1360,4 +1448,264 @@ dialog>p:not(.eyebrow) {
   .film-layout {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* ELUNE — Soft, Pure & Airy */
+:root {
+  --paper: #faf9f6;
+  --cream: #f5f0e9;
+  --beige: #e8ddd0;
+  --sand: #c8b7a4;
+  --taupe: #ad907b;
+  --ink: #51473f;
+  --muted: #81756c;
+  --line: rgba(173, 144, 123, .27);
+  --olive: #ad907b;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--beige); }
+
+.announcement {
+  height: 30px;
+  background: var(--cream);
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  letter-spacing: 2.4px;
+}
+
+.announcement span { color: var(--muted); opacity: 1; }
+
+header {
+  height: 92px;
+  padding-inline: clamp(24px, 5vw, 76px);
+  background: rgba(250, 249, 246, .94);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.logo { font-size: 34px; letter-spacing: 7px; }
+.logo span { color: var(--muted); }
+nav { gap: clamp(22px, 3vw, 44px); }
+nav a { position: relative; }
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -8px;
+  height: 1px;
+  background: var(--taupe);
+  transition: right .2s ease;
+}
+nav a:hover { color: var(--taupe); }
+nav a:hover::after { right: 0; }
+
+.header-cta { border-color: var(--taupe); }
+
+.hero {
+  min-height: min(780px, calc(100vh - 122px));
+  grid-template-columns: 46% 54%;
+  background: var(--paper);
+}
+
+.hero-copy {
+  padding: clamp(70px, 9vh, 110px) 9% 42px 11%;
+  justify-content: center;
+}
+
+h1 { font-size: clamp(58px, 6.2vw, 94px); line-height: .96; }
+h1 em, h2 em { color: var(--taupe); }
+.hero-korean { font-weight: 300; }
+.description { color: var(--muted); }
+
+.button {
+  background: var(--taupe);
+  border-color: var(--taupe);
+  color: #fff;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.button:hover { background: #9b7f6c; border-color: #9b7f6c; transform: translateY(-1px); }
+
+.hero-visual {
+  min-height: min(780px, calc(100vh - 122px));
+  background: var(--cream);
+}
+.hero-visual img {
+  object-fit: contain;
+  object-position: center;
+  padding: clamp(54px, 7vw, 105px);
+  filter: drop-shadow(0 14px 18px rgba(81,71,63,.07));
+}
+.image-tag { color: var(--ink); }
+
+.scent-strip { background: #fff; border-color: var(--line); color: var(--muted); }
+.scent-strip i { color: var(--taupe); }
+
+.section { padding: clamp(84px, 10vw, 148px) clamp(24px, 7vw, 112px); }
+.eyebrow { color: var(--taupe); }
+
+.story { background: var(--paper); grid-template-columns: 15% 61% 24%; }
+.story-text { color: var(--muted); }
+.story-aside { border-color: var(--line); color: var(--taupe); }
+.signature { color: var(--taupe); }
+
+.fragrance-section { background: var(--cream); border-color: var(--line); }
+.fragrance-intro { color: var(--muted); max-width: 560px; }
+.fragrance-grid { gap: clamp(12px, 1.7vw, 26px); }
+.fragrance-card {
+  border-color: transparent;
+  background: rgba(255,255,255,.56);
+  transition: border-color .2s, background .2s, transform .25s;
+}
+.fragrance-card:hover,
+.fragrance-card[aria-pressed="true"] {
+  border-color: var(--taupe);
+  background: rgba(255,255,255,.88);
+  transform: translateY(-4px);
+}
+.fragrance-card img {
+  object-fit: contain;
+  object-position: center;
+  padding: clamp(18px, 3vw, 46px);
+  background: #f8f5f0;
+}
+.fragrance-card:first-child img { object-position: center; }
+.fragrance-copy { padding: 18px 18px 22px; }
+.fragrance-index, .fragrance-ko, .fragrance-family { color: var(--muted); }
+.fragrance-summary {
+  min-height: 3.2em;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+.fragrance-indicator { border-color: var(--taupe); }
+.fragrance-card[aria-pressed="true"] .fragrance-indicator {
+  background: var(--taupe);
+  box-shadow: inset 0 0 0 3px #fff;
+}
+.fragrance-link { border-color: var(--taupe); }
+
+.scent { background: #fff; }
+.notes-layout { gap: clamp(48px, 8vw, 126px); }
+.note-art {
+  background: var(--cream);
+}
+.orbit { border-color: rgba(173,144,123,.48); }
+.orbit-dot { background: var(--taupe); }
+.art-word { color: rgba(173,144,123,.8); }
+.note-tabs { border-color: var(--line); }
+.note-tabs button { color: var(--muted); }
+.note-tabs button[aria-selected="true"] { color: var(--ink); border-color: var(--taupe); }
+.note-tags span { background: var(--cream); border-color: var(--line); }
+
+.quote { background: var(--beige); color: var(--ink); }
+.quote span { color: var(--muted); }
+
+.ritual { background: var(--paper); }
+.ritual-grid article { border-color: var(--line); }
+.ritual-icon, .ritual-num { color: var(--taupe); }
+
+.collection-image {
+  background: var(--beige);
+  overflow: hidden;
+}
+.collection-image-frame img {
+  object-fit: contain;
+  padding: clamp(48px, 7vw, 110px);
+  filter: drop-shadow(0 14px 18px rgba(81,71,63,.07));
+}
+.collection-image > span { color: var(--muted); }
+.product { background: #fff; }
+.product-description, .demo-notice, details p { color: var(--muted); }
+.product-profile {
+  margin: 25px 0 0;
+  border-top: 1px solid var(--line);
+}
+.product-profile > div {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 18px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.product-profile dt {
+  color: var(--taupe);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+.product-profile dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.size { border-color: var(--line); color: var(--ink); }
+.size.active { background: var(--beige); border-color: var(--taupe); }
+details { border-color: var(--line); }
+
+.scent-films { background: var(--paper); border-color: var(--line); }
+.film-layout { grid-template-columns: minmax(0, 420px) minmax(0, 560px); }
+#film-caption { color: var(--muted); }
+#scent-film {
+  width: min(100%, 560px);
+  background: var(--cream);
+  border: 12px solid #fff;
+  box-shadow: 0 12px 30px rgba(81,71,63,.06);
+}
+.film-options button { border-color: var(--line); color: var(--ink); background: #fff; }
+.film-options button:hover { border-color: var(--taupe); }
+.film-options button[aria-pressed="true"] { background: var(--taupe); border-color: var(--taupe); }
+
+.closing { background: var(--cream); }
+.closing > a { border-color: var(--taupe); }
+footer { background: #fff; border-color: var(--line); }
+footer > p, footer > span { color: var(--muted); }
+
+dialog { background: var(--paper); border-color: var(--line); box-shadow: 0 24px 70px rgba(81,71,63,.16); }
+dialog::backdrop { background: rgba(81,71,63,.28); backdrop-filter: blur(6px); }
+
+@media (max-width: 1000px) {
+  header { height: 84px; }
+  .hero, .hero-visual { min-height: 620px; }
+  .hero-copy { padding-left: 8%; }
+  .story { grid-template-columns: 15% 65% 20%; }
+}
+
+@media (max-width: 740px) {
+  header { height: 76px; }
+  nav { top: 76px; background: rgba(250,249,246,.98); }
+  .hero { display: flex; min-height: auto; }
+  .hero-copy { padding: 54px 7% 34px; }
+  .hero-visual { min-height: 470px; }
+  .hero-visual img { padding: 54px; }
+  .section { padding: 76px 7%; }
+  .fragrance-card:hover, .fragrance-card[aria-pressed="true"] { transform: none; }
+  .fragrance-card img { padding: 22px; }
+  .film-layout { gap: 38px; }
+  #scent-film { border-width: 7px; }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 52px; }
+  .hero-visual { min-height: 390px; }
+  .hero-visual img { padding: 38px; }
+  .scent-strip span:nth-of-type(3) { display: none; }
+  .fragrance-grid { gap: 9px; }
+  .fragrance-copy { padding: 12px; }
+  .fragrance-copy strong { font-size: 18px; }
+  .fragrance-family { font-size: 9px; }
+  .collection-image { min-height: 390px; }
+  .collection-image-frame { height: 390px; }
+  .collection-image-frame img { padding: 42px; }
 }

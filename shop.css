@@ -61,3 +61,18 @@
   .shop-nav button { min-height: 44px; }
   #shop-dialog { max-height: calc(100dvh - 20px); width: calc(100% - 20px); }
 }
+
+/* Soft & Pure commerce surfaces */
+.shop-nav button { color: var(--ink); }
+.shop-nav button:hover { color: var(--taupe); text-decoration: none; }
+.shop-form input {
+  border-color: var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 0;
+}
+.shop-form input:focus { outline: 1px solid var(--taupe); border-color: var(--taupe); }
+.shop-secondary { border-color: var(--line); color: var(--ink); }
+.shop-secondary:hover { border-color: var(--taupe); background: var(--cream); }
+.shop-summary, .shop-order { background: var(--cream); }
+#shop-message { color: #8f5f52 !important; }
