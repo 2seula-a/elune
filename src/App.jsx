@@ -18,7 +18,7 @@ const catalog = {
     ko: "모닝 듀",
     image: "morning-dew",
     family: "Fresh Floral",
-    color: "#D5E6F0",
+    color: "#D5E5F1",
     mood: "깨끗함 · 상쾌함 · 맑은 아침 공기",
     time: "상쾌한 아침",
     description: "이른 아침, 꽃잎에 맺힌 이슬처럼 맑고 산뜻한 향.",
@@ -55,7 +55,7 @@ const catalog = {
     ko: "화이트 리넨",
     image: "white-linen",
     family: "Clean Musk",
-    color: "#F1E9D8",
+    color: "#F0F1ED",
     mood: "보송함 · 편안함 · 갓 세탁한 침구",
     time: "여유로운 낮",
     description: "따스한 햇살 아래 바짝 말린 하얀 침구처럼 포근하고 부드러운 향.",
@@ -92,7 +92,7 @@ const catalog = {
     ko: "콰이어트 블룸",
     image: "quiet-bloom",
     family: "Soft Floral",
-    color: "#EBC9C7",
+    color: "#EFD4D3",
     mood: "사랑스러움 · 차분함 · 은은한 꽃향기",
     time: "부드러운 오후",
     description: "고요한 정원에서 꽃이 천천히 피어나는 순간을 담은 은은하고 우아한 향.",
@@ -129,7 +129,7 @@ const catalog = {
     ko: "샌달 헤이즈",
     image: "sandal-haze",
     family: "Soft Woody",
-    color: "#B89A81",
+    color: "#C6A88D",
     mood: "따뜻함 · 차분함 · 깊은 휴식",
     time: "고요한 저녁",
     description: "해 질 무렵, 나무 향이 가득한 조용한 공간에서 느끼는 깊고 따뜻한 향.",
@@ -170,10 +170,10 @@ const captions = {
 };
 
 const productImages = {
-  sunday: { 30: "LENTO_Morning_Dew_30ML.png", 50: "LENTO_Morning_Dew_50ML.png" },
-  citrus: { 30: "LENTO_White_Linen_30ML.png", 50: "LENTO_White_Linen_50ML.png" },
-  petal: { 30: "LENTO_Quiet_Bloom30ML.png", 50: "LENTO_Quiet_Bloom50ML.png" },
-  rain: { 30: "LENTO_Sandal_Haze_30ML.png", 50: "LENTO_Sandal_Haze_50ML.png" },
+  sunday: { 30: "ELUNE_Morning_Dew_30ML.png", 50: "ELUNE_Morning_Dew_50ML.png" },
+  citrus: { 30: "ELUNE_White_Linen_30ML.png", 50: "ELUNE_White_Linen_50ML.png" },
+  petal: { 30: "ELUNE_Quiet_Bloom30ML.png", 50: "ELUNE_Quiet_Bloom50ML.png" },
+  rain: { 30: "ELUNE_Sandal_Haze_30ML.png", 50: "ELUNE_Sandal_Haze_50ML.png" },
 };
 
 const filmFiles = {
