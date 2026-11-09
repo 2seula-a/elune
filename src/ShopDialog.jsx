@@ -6,10 +6,14 @@ import {
   useState,
 } from "react";
 
-// 기존 LENTO 체험 계정 및 주문 데이터를 그대로 읽습니다.
-const ACCOUNT_KEY = "morrow.accounts.v1";
-const ORDER_KEY = "morrow.orders.v1";
-const SESSION_KEY = "morrow.session.v1";
+// ELUNE 체험용 계정 및 주문 데이터 저장 키
+const ACCOUNT_KEY = "elune.accounts.v1";
+const ORDER_KEY = "elune.orders.v1";
+const SESSION_KEY = "elune.session.v1";
+const DEMO_ACCOUNT = {
+  email: "elune@test.com",
+  password: "elune1234",
+};
 
 function readRecords(key) {
   const value = JSON.parse(localStorage.getItem(key) || "[]");
@@ -78,7 +82,7 @@ function EmailField() {
         required
         maxLength={120}
         autoComplete="username"
-        placeholder="scent@example.com"
+        placeholder="elune@test.com"
       />
     </label>
   );
@@ -103,9 +107,11 @@ const ShopDialog = forwardRef(function ShopDialog(
   const [lookupResults, setLookupResults] = useState(null);
   const [completedOrder, setCompletedOrder] = useState(null);
   const [credentials, setCredentials] = useState(null);
+  const [copyStatus, setCopyStatus] = useState(null);
   const activeRef = useRef(0);
   const member = (() => {
     try {
+      if (memberEmail === DEMO_ACCOUNT.email) return DEMO_ACCOUNT;
       return (
         readRecords(ACCOUNT_KEY).find((a) => a.email === memberEmail) || null
       );
@@ -123,6 +129,7 @@ const ShopDialog = forwardRef(function ShopDialog(
 
   function navigate(next) {
     setMessage("");
+    setCopyStatus(null);
     setLookupResults(null);
     setScreen(next);
   }
@@ -143,6 +150,7 @@ const ShopDialog = forwardRef(function ShopDialog(
     setScreen(null);
     setPendingOrder(null);
     setCredentials(null);
+    setCopyStatus(null);
     setCompletedOrder(null);
     setMessage("");
     setBusy(false);
@@ -173,6 +181,21 @@ const ShopDialog = forwardRef(function ShopDialog(
     setMemberEmail(email);
     return true;
   }
+  async function copyCredentials() {
+    if (!credentials) return;
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("clipboard-unavailable");
+      await navigator.clipboard.writeText(
+        `이메일: ${credentials.email}\n비밀번호: ${credentials.password}`,
+      );
+      setCopyStatus({ message: "복사되었습니다.", failed: false });
+    } catch {
+      setCopyStatus({
+        message: "복사하지 못했습니다. 계정 정보를 직접 선택해 복사해 주세요.",
+        failed: true,
+      });
+    }
+  }
   async function onSubmit(event) {
     event.preventDefault();
     if (busy) return;
@@ -185,11 +208,16 @@ const ShopDialog = forwardRef(function ShopDialog(
     setBusy(true);
     try {
       if (screen === "login") {
-        const account = readRecords(ACCOUNT_KEY).find((a) => a.email === email);
-        if (
-          !account ||
-          (await passwordDigest(password, account.salt)) !== account.digest
-        ) {
+        const isDemoAccount =
+          email === DEMO_ACCOUNT.email && password === DEMO_ACCOUNT.password;
+        const account = isDemoAccount
+          ? DEMO_ACCOUNT
+          : readRecords(ACCOUNT_KEY).find((a) => a.email === email);
+        const isRegisteredAccount =
+          account &&
+          account !== DEMO_ACCOUNT &&
+          (await passwordDigest(password, account.salt)) === account.digest;
+        if (!isDemoAccount && !isRegisteredAccount) {
           if (activeRef.current === requestId)
             setMessage("이메일 또는 비밀번호를 확인해 주세요.");
           return;
@@ -197,16 +225,15 @@ const ShopDialog = forwardRef(function ShopDialog(
         if (activeRef.current !== requestId) return;
         sessionStorage.setItem(SESSION_KEY, email);
         setMemberEmail(email);
-        navigate(pendingOrder ? "checkout" : "account");
+        navigate(null);
       } else if (screen === "signup") {
         if (password !== data.get("confirm")) {
           setMessage("비밀번호 확인이 일치하지 않습니다.");
           return;
         }
-        if (await register(email, password, requestId))
-          navigate(pendingOrder ? "checkout" : "account");
+        if (await register(email, password, requestId)) navigate("welcome");
       } else if (screen === "quick") {
-        const quickEmail = `lento-${randomHex(6)}@example.com`;
+        const quickEmail = `elune-${randomHex(6)}@example.com`;
         const quickPassword = randomHex(9);
         if (await register(quickEmail, quickPassword, requestId)) {
           setCredentials({ email: quickEmail, password: quickPassword });
@@ -257,7 +284,8 @@ const ShopDialog = forwardRef(function ShopDialog(
     account: "내 계정",
     checkout: member ? "회원 주문" : "비회원 주문",
     lookup: "주문 조회",
-    complete: "체험 주문 완료",
+    complete: "주문 완료",
+    welcome: "ELUNE에 오신 것을 환영합니다.",
   }[screen];
   const action = (target, label, primary = false) => (
     <button
@@ -282,6 +310,7 @@ const ShopDialog = forwardRef(function ShopDialog(
       <dialog
         ref={dialogRef}
         id="shop-dialog"
+        className={screen === "welcome" ? "is-welcome" : undefined}
         aria-labelledby="shop-title"
         onClose={closeDialog}
         onCancel={() => {
@@ -296,13 +325,39 @@ const ShopDialog = forwardRef(function ShopDialog(
         >
           ×
         </button>
-        <p className="eyebrow">ELUNE / SHOP</p>
+        <p className="eyebrow">
+          {screen === "welcome" ? "WELCOME TO ELUNE" : "ELUNE / SHOP"}
+        </p>
+        {screen === "welcome" && (
+          <span className="welcome-check" aria-hidden="true">
+            ✓
+          </span>
+        )}
         <h2 id="shop-title" tabIndex={-1}>
           {title}
         </h2>
-        <p className="shop-hint">
-          포트폴리오 체험용입니다. 예시 이메일과 체험용 비밀번호를 사용하세요.
-        </p>
+        {screen === "login" && (
+          <aside className="demo-account" aria-label="체험용 로그인 계정">
+            <p className="demo-account-title">
+              체험용 계정으로 로그인해 보세요.
+            </p>
+            <dl>
+              <div>
+                <dt>아이디</dt>
+                <dd>{DEMO_ACCOUNT.email}</dd>
+              </div>
+              <div>
+                <dt>비밀번호</dt>
+                <dd>{DEMO_ACCOUNT.password}</dd>
+              </div>
+            </dl>
+          </aside>
+        )}
+        {screen !== "welcome" && (
+          <p className="shop-hint">
+            예시 이메일과 체험용 비밀번호를 사용해보세요.
+          </p>
+        )}
         <div id="shop-view">
           {screen === "login" && (
             <>
@@ -364,6 +419,21 @@ const ShopDialog = forwardRef(function ShopDialog(
               </div>
             </>
           )}
+          {screen === "welcome" && (
+            <div className="welcome-view">
+              <p>회원가입이 완료되었습니다.</p>
+              <p className="welcome-message">
+                당신의 일상에 은은한 향기가 머물기를 바랍니다.
+              </p>
+              <button
+                type="button"
+                className="button"
+                onClick={() => navigate(null)}
+              >
+                쇼핑 계속하기
+              </button>
+            </div>
+          )}
           {screen === "quick" && (
             <>
               <p>체험용 이메일과 비밀번호를 발급하고 바로 로그인합니다.</p>
@@ -380,20 +450,34 @@ const ShopDialog = forwardRef(function ShopDialog(
           {screen === "credentials" && credentials && (
             <>
               <div className="shop-summary">
+                <p className="credentials-guide">
+                  발급된 계정 정보를 보관해 주세요.
+                </p>
                 <p>
                   이메일 <code>{credentials.email}</code>
                 </p>
                 <p>
                   비밀번호 <code>{credentials.password}</code>
                 </p>
+                <button
+                  type="button"
+                  className="credential-copy"
+                  onClick={copyCredentials}
+                >
+                  계정 정보 복사
+                </button>
+                {copyStatus && (
+                  <p
+                    className={`copy-status${copyStatus.failed ? " is-error" : ""}`}
+                    role="status"
+                  >
+                    {copyStatus.message}
+                  </p>
+                )}
                 <p>다시 로그인할 때 사용할 정보를 복사해 두세요.</p>
               </div>
               <div className="shop-actions">
-                {action(
-                  pendingOrder ? "checkout" : "account",
-                  pendingOrder ? "주문 계속하기" : "내 계정 보기",
-                  true,
-                )}
+                {action(null, "쇼핑 계속하기", true)}
               </div>
             </>
           )}
@@ -428,7 +512,7 @@ const ShopDialog = forwardRef(function ShopDialog(
               <form className="shop-form" onSubmit={onSubmit}>
                 {member ? <p>주문 계정 · {member.email}</p> : <EmailField />}
                 <button className="button" disabled={busy}>
-                  {member ? "회원" : "비회원"} 체험 주문 접수
+                  {member ? "회원" : "비회원"} 주문 접수
                 </button>
               </form>
               {!member && (

@@ -1,4 +1,4 @@
-const sundayFragrance = {
+const morningDewFragrance = {
   name: 'Sunday Still',
   koreanName: '선데이 스틸',
   image: 'perfume',
@@ -12,8 +12,8 @@ function makeNote(label, title, subtitle, desc, tags, word) {
 }
 
 const fragrances = {
-  sunday: sundayFragrance,
-  citrus: {
+  morningDew: morningDewFragrance,
+  whiteLinen: {
     name: 'Citrus Hour',
     koreanName: '시트러스 아워',
     image: 'citrus-hour',
@@ -25,7 +25,7 @@ const fragrances = {
       base: makeNote('THE LASTING MEMORY', 'White Musk & Cedar', '햇볕에 말린 셔츠 같은 여운', '부드러운 화이트 머스크 뒤로 마른 나무 향이 살짝 남습니다.', ['깨끗한', '머스크', '우디'], 'musk.'),
     },
   },
-  petal: {
+  quietBloom: {
     name: 'Petal Letter',
     koreanName: '페탈 레터',
     image: 'petal-letter',
@@ -37,7 +37,7 @@ const fragrances = {
       base: makeNote('THE LASTING MEMORY', 'Iris & White Musk', '종이에 남은 꽃잎의 자국', '보송한 아이리스와 화이트 머스크가 피부 가까이 은은하게 머뭅니다.', ['보송한', '파우더리', '머스크'], 'iris.'),
     },
   },
-  rain: {
+  sandalHaze: {
     name: 'After Rain',
     koreanName: '애프터 레인',
     image: 'after-rain',
@@ -87,16 +87,16 @@ fragranceCards.forEach(card => {
 });
 
 const filmCaptions = {
-  sunday: '오후 햇살이 무화과나무 사이로 스며들고, 바람에 잎이 가만히 흔들립니다.',
-  citrus: '아침 햇살 속 레몬나무 가지와 하얀 오렌지꽃이 가볍게 흔들립니다.',
-  petal: '옅은 아침빛 속 장미와 피오니 사이로 부드러운 바람이 스칩니다.',
-  rain: '비가 갠 숲, 젖은 이끼를 끼고 흐르는 물 위로 잔물결이 번집니다.',
+  morningDew: '오후 햇살이 무화과나무 사이로 스며들고, 바람에 잎이 가만히 흔들립니다.',
+  whiteLinen: '아침 햇살 속 레몬나무 가지와 하얀 오렌지꽃이 가볍게 흔들립니다.',
+  quietBloom: '옅은 아침빛 속 장미와 피오니 사이로 부드러운 바람이 스칩니다.',
+  sandalHaze: '비가 갠 숲, 젖은 이끼를 끼고 흐르는 물 위로 잔물결이 번집니다.',
 };
 const filmPlayer = document.querySelector('#scent-film');
 const filmOptions = document.querySelectorAll('[data-film]');
 
 function selectFilm(key, fragrance) {
-  const filename = key === 'sunday' ? 'sunday-still' : fragrance.image;
+  const filename = key === 'morningDew' ? 'sunday-still' : fragrance.image;
   const source = 'assets/' + filename + '.mp4';
   if (filmPlayer.getAttribute('src') === source) return;
 

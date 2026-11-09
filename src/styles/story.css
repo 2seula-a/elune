@@ -1,0 +1,20 @@
+.story.section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 60px;
+  padding-left: 15%;
+  padding-right: 15%;
+  background: var(--paper);
+}
+
+.story-main,
+.story-aside { min-width: 0; }
+
+@media (max-width: 1000px) {
+  .story.section { gap: 35px; padding-left: 8%; padding-right: 8%; }
+}
+
+@media (max-width: 680px) {
+  .story.section { display: block; padding-left: 7%; padding-right: 7%; }
+}
