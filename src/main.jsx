@@ -6,7 +6,7 @@ import "./styles/global.css";
 import "./styles/sections.css";
 import "./styles/chapter-navigation.css";
 import "./styles/story.css";
-import "../shop.css";
+import "./styles/shop.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
